@@ -22,7 +22,11 @@ interface InputTypes {
 	removeLine?: boolean;
 }
 
-const ModalLibroDiario = () => {
+interface IHeaderLibroDiario {
+	setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 	const { register, handleSubmit, getValues, reset, control, formState } =
 		useForm<any>({
 			mode: 'onChange',
@@ -59,8 +63,13 @@ const ModalLibroDiario = () => {
 			'🚀 ~ file: index.tsx:39 ~ ModalLibroDiario ~ filteredData:',
 			filteredData
 		);
+		type OutputObject = {
+			account: string;
+			position: string;
+			amount: number;
+		};
 		console.log(data);
-		let output = [];
+		var output: OutputObject[] = [];
 		let accounts = Object.keys(data).filter(key => key.startsWith('nameAccount')).length;
 		for (let i = 0; i < accounts; i++) {
 			let account = data[`nameAccount${i}`];
