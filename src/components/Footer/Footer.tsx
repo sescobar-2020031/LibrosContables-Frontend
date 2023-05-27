@@ -23,7 +23,7 @@ const Footer = () => {
                     <span>Inicio</span>
                     <span>Nosotros</span>
                     <span>Inicia Sesión</span>
-                    <span>Registrate sadfasd</span>
+                    <span>Registrate</span>
                 </div>
                 <div className="footer-section-columns">
                     <span>Samuel Escobar</span>

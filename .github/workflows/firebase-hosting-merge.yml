@@ -7,6 +7,12 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - main
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.0.2
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
@@ -18,9 +24,3 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_LIBROSCONTABLESGT }}"
           channelId: live
           projectId: libroscontablesgt
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 6.0.2
