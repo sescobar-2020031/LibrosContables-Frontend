@@ -47,7 +47,7 @@ const ModalColForm = ({ register, getValues, formState }: IModalColForm) => {
 							},
 							pattern: {
 								value: /^[0-9]+$/,
-								message: 'Solo se permiten números',
+								message: 'Solo se permiten números.',
 							},
 						})}
 					/>
