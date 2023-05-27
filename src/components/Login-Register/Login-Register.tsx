@@ -54,6 +54,7 @@ const LoginRegister = () => {
                     fullName: res.data.user.fullName,
                     email: res.data.user.email,
                     token: res.data.token,
+                    diaryBook: res.data.diaryBookExist._id,
                     userLoggued: true
                 }
                 setTimeout(() => {

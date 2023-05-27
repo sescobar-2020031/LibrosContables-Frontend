@@ -5,12 +5,14 @@ interface UserContextValue {
         fullName: string;
         email: string;
         token: string;
+        diaryBook: string;
         userLoggued: boolean;
     };
     setSessionUser: (user: {
         fullName: string;
         email: string;
         token: string;
+        diaryBook: string;
         userLoggued: boolean;
     }) => void;
 }
@@ -20,6 +22,7 @@ const SessionUserContext = createContext<UserContextValue>({
         fullName: "",
         email: "",
         token: "",
+        diaryBook: "",
         userLoggued: false
     },
     setSessionUser: () => { }

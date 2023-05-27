@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import '../styles.scss';
 import {
 	UseFormRegister,
 	UseFormGetValues,
 	UseFormStateReturn,
 } from 'react-hook-form';
+import axios from 'axios';
+import SessionUserContext from '~/context/sessionUserContext';
 
 
 interface IModalColForm {
@@ -30,17 +32,18 @@ const ModalColForm = ({
 }: IModalColForm) => {
 	const [hasDebeValue, setHasDebeValue] = useState(false);
 	const [hasHaberValue, setHasHaberValue] = useState(false);
+	const [accoutsUser, setAccoutsUser] = useState([]);
+	const { sessionUser } = useContext(SessionUserContext);
 
-	const validateDebeHaber = () => {
-		const debeValue = getValues(`debe${registerName}`);
-		const haberValue = getValues(`haber${registerName}`);
-
-		if (debeValue && haberValue) {
-			return 'No puede ingresar valores en ambos campos a la vez.';
-		} else {
-			return '';
-		}
-	};
+	const loadData = async () => {
+		axios.defaults.headers.common['Authorization'] = sessionUser.token;
+		await axios.get(import.meta.env.VITE_LISTACOUNT)
+			.then((res) => {
+				setAccoutsUser(res.data.accounts);
+			}).catch((err) => {
+				console.log(err);
+			});
+	}
 
 	const handleDebeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value) {
@@ -61,6 +64,7 @@ const ModalColForm = ({
 	useEffect(() => {
 		setHasDebeValue(false);
 		setHasHaberValue(false);
+		loadData();
 	}, [registerName]);
 
 	return (
@@ -74,17 +78,23 @@ const ModalColForm = ({
 						{...register(`nameAccount${registerName}`, {})}
 					/> */}
 					<select
-					style={{
-						width: '100%',
-						padding: '1rem'
-					}}
+						style={{
+							width: '100%',
+							padding: '1rem'
+						}}
 						defaultValue='select'
 						{...register(`nameAccount${registerName}`, {})}
 					>
-						<option selected value='0'>
+						<option selected disabled value='0'>
 							Selecciona una cuenta
 						</option>
-						{/* Map para data del backend */}
+						{
+							accoutsUser.map((item: any) => (
+								<option value={item._id}>
+									{item.name}
+								</option>
+							))
+						}
 					</select>
 					{/* {`${formState.errors.nameAccount}${registerName}` && (
 						<p className='input-error'>

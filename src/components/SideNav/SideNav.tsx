@@ -14,7 +14,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import HomeIcon from '@mui/icons-material/Home';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AlignVerticalTopIcon from '@mui/icons-material/AlignVerticalTop';
 import BalanceIcon from '@mui/icons-material/Balance';
@@ -156,9 +156,9 @@ export default function SideNav() {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <HomeIcon />
+                                    <AccountBalanceWalletIcon />
                                 </ListItemIcon>
-                                <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
+                                <ListItemText primary="Cuentas" sx={{ opacity: open ? 1 : 0 }} />
                             </ListItemButton>
                         </ListItem>
                     </List>

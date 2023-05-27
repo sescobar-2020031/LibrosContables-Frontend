@@ -22,6 +22,7 @@ export const AppRouter = () => {
         fullName: cacheSession ? JSON.parse(AES.decrypt(cacheSession, import.meta.env.VITE_IDENTITY_KEY).toString(Utf8)).fullName : "",
         email: cacheSession ? JSON.parse(AES.decrypt(cacheSession, import.meta.env.VITE_IDENTITY_KEY).toString(Utf8)).email : "",
         token: cacheSession ? JSON.parse(AES.decrypt(cacheSession, import.meta.env.VITE_IDENTITY_KEY).toString(Utf8)).token : "",
+        diaryBook: cacheSession ? JSON.parse(AES.decrypt(cacheSession, import.meta.env.VITE_IDENTITY_KEY).toString(Utf8)).diaryBook : "",
         userLoggued: cacheSession ? JSON.parse(AES.decrypt(cacheSession, import.meta.env.VITE_IDENTITY_KEY).toString(Utf8)).userLoggued : ""
     });
 
