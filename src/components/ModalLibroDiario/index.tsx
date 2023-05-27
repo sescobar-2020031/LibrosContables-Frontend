@@ -10,6 +10,10 @@ interface InputTypes {
 	removeLine?: boolean;
 }
 
+interface FormData {
+	[key: string]: string;
+}
+
 const ModalLibroDiario = () => {
 	const { register, handleSubmit, getValues, reset, control, formState } =
 		useForm<any>({
@@ -32,7 +36,7 @@ const ModalLibroDiario = () => {
 		setCampos(data);
 	};
 
-	const onSubmit: SubmitHandler<any> = async data => {
+	const onSubmit: SubmitHandler<FormData> = async data => {
 		const filteredData = Object.entries(data).reduce((obj, [key, value]) => {
 			if (value !== '') {
 				obj[key] = value;
