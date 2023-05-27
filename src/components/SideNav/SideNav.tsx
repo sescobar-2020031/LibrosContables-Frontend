@@ -23,6 +23,7 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import './style.scss'
 
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({

@@ -9,7 +9,7 @@ import SessionUserContext from '~/context/sessionUserContext';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import moment from 'moment';
-moment.locale('es')
+moment.locale('es');
 
 export interface IModalLibroDFormPage {
 	nameAccount: string;
@@ -20,21 +20,23 @@ const LibroDiario = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [dataSend, setDataSend] = useState([]);
 	const [cargarData, setCargarData] = useState([]);
-	const { sessionUser } = useContext(SessionUserContext)
+	const { sessionUser } = useContext(SessionUserContext);
 
 	const loadData = async () => {
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
-		await axios.post(import.meta.env.VITE_GETDIARY, { idDiary: sessionUser.diaryBook })
-			.then((res) => {
+		await axios
+			.post(import.meta.env.VITE_GETDIARY, { idDiary: sessionUser.diaryBook })
+			.then(res => {
 				setDataSend(res.data.diary.accountItems);
-			}).catch((err) => {
+			})
+			.catch(err => {
 				console.log(err);
 			});
-	}
+	};
 
 	useEffect(() => {
 		loadData();
-	}, [cargarData])
+	}, [cargarData]);
 
 	// const data = accoutsUser.map((value: any, index) => {
 	// 	return {
@@ -55,85 +57,84 @@ const LibroDiario = () => {
 				>
 					<ModalLibroDiario setShowModal={setShowModal} />
 				</Modal>
-			}{
-				dataSend.map((data: any) => {
-					console.log(data);
-					return (
-						<>
-							<TextField
-								hiddenLabel
-								id="filled-hidden-label-small"
-								defaultValue="Small"
-								variant="filled"
-								value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
-								size="small"
-							/>
-							<TextField
-								hiddenLabel
-								id="filled-hidden-label-small"
-								defaultValue="Small"
-								variant="filled"
-								value={data.description}
-								size="small"
-							/>
-							<br />
-							{
-								data.accounts.map((data) => {
-									return (
-										<>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												value={data.account.name}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												placeholder='Debe'
-												variant="filled"
-												value={data.position == 'Debit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<br></br>
-										</>
-									)
-								})
-							}
-						</>
-					)
-				})
 			}
+			{dataSend.map((data: any, index: number) => {
+				console.log(data);
+				return (
+					<>
+						<TextField
+							key={index}
+							hiddenLabel
+							id='filled-hidden-label-small'
+							defaultValue='Small'
+							variant='filled'
+							value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
+							size='small'
+						/>
+						<TextField
+							hiddenLabel
+							id='filled-hidden-label-small'
+							defaultValue='Small'
+							variant='filled'
+							value={data.description}
+							size='small'
+						/>
+						<br />
+						{data.accounts.map((data, index: number) => {
+							return (
+								<>
+									<TextField
+										key={index}
+										hiddenLabel
+										id='filled-hidden-label-small'
+										defaultValue='Small'
+										variant='filled'
+										value={data.account.name}
+										size='small'
+									/>
+									<TextField
+										hiddenLabel
+										id='filled-hidden-label-small'
+										defaultValue='Small'
+										placeholder='Debe'
+										variant='filled'
+										value={data.position == 'Debit' ? data.amount : 0}
+										size='small'
+									/>
+									<TextField
+										hiddenLabel
+										id='filled-hidden-label-small'
+										defaultValue='Small'
+										variant='filled'
+										placeholder='Debe'
+										value={data.position == 'Credit' ? data.amount : 0}
+										size='small'
+									/>
+									<TextField
+										hiddenLabel
+										id='filled-hidden-label-small'
+										defaultValue='Small'
+										variant='filled'
+										placeholder='Debe'
+										value={data.position == 'Credit' ? data.amount : 0}
+										size='small'
+									/>
+									<TextField
+										hiddenLabel
+										id='filled-hidden-label-small'
+										defaultValue='Small'
+										variant='filled'
+										placeholder='Debe'
+										value={data.position == 'Credit' ? data.amount : 0}
+										size='small'
+									/>
+									<br></br>
+								</>
+							);
+						})}
+					</>
+				);
+			})}
 		</>
 	);
 };
