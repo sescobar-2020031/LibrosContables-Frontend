@@ -7,24 +7,12 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - main
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2.2.1
-        with:
-          version: 7.5.1
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: npm i -g pnpm@latest
+      - run: pnpm i
       - run: pnpm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
