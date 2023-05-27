@@ -113,7 +113,7 @@ export default function SideNav() {
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
             <AppBar position="fixed" open={open}>
-                <Toolbar className={`navbarLoggued ${open ? 'transparent' : ''}`}>
+                <Toolbar className={`navbarLoggued ${open ? 'transparentNavbar' : ''}`}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -127,7 +127,7 @@ export default function SideNav() {
                         <MenuIcon />
                     </IconButton>
                 </Toolbar>
-                <h1 className={`logo-loggued ${open ? 'transparent' : ''}`}><i className={`fa-solid fa-book-open-reader iconHeader`}></i>Bookify</h1>
+                <h1 className={`logo-loggued ${open ? 'transparentNavbar' : ''}`}><i className={`fa-solid fa-book-open-reader iconHeader`}></i>Bookify</h1>
                 <div className='boxUser'>
                     <h1 style={{color: "#000", fontSize: "20px"}}>Hola mundo</h1>
                 </div>
