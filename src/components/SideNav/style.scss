@@ -1,0 +1,118 @@
+.navbarLoggued {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: #4c4c4c;
+    background-color: white;
+    box-shadow: none;
+}
+
+.css-19z1ozs-MuiPaper-root-MuiAppBar-root {
+    flex-direction: row !important;
+    align-items: center !important;
+    color: #4c4c4c !important;
+    background-color: white !important;
+    box-shadow: none !important;
+}
+
+.css-p55zm9-MuiButtonBase-root-MuiIconButton-root {
+    margin-right: 0px !important;
+}
+
+.css-12i7wg6-MuiPaper-root-MuiDrawer-paper {
+    border-right: 0px !important;
+    background-color: #5f3bd9 !important;
+    border-radius: 0 0 2rem 0 !important;
+}
+
+.css-1ddsiuw-MuiListItemIcon-root {
+    color: white !important;
+}
+
+.css-wa5fuu-MuiListItemIcon-root {
+    color: white !important;
+}
+
+.logo-loggued {
+    font-size: 1.5rem;
+    margin-left: 1rem;
+}
+
+.logo-loggued-open {
+    font-size: 1.5rem;
+}
+
+.links {
+    width: inherit;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+}
+
+.css-hyum1k-MuiToolbar-root {
+    background-color: #5f3bd9;
+    width: calc(64px + 1px);
+    border-radius: 0px 2rem 0px 0px;
+    color: white;
+}
+
+.css-78trlr-MuiButtonBase-root-MuiIconButton-root {
+    color: #5f3bd9 !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 1rem;
+    background-color: white !important;
+    border-radius: 50%;
+}
+
+.css-i4bv87-MuiSvgIcon-root {
+    font-size: 1.6rem;
+}
+
+.header-loggued {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0.5rem 1.5rem 0 1.5rem !important;
+    color: white !important;
+}
+
+.iconHeader-open {
+    color: #fff;
+    font-size: 1.4rem;
+    margin-right: 0.4rem;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link.active {
+    color: white;
+}
+
+.active {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.219), #5f3bd9);
+}
+
+.transparent {
+    display: none !important;
+}
+
+.css-1191obr-MuiPaper-root-MuiAppBar-root {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+.boxUser {
+    width: 100%;
+    height: 64px;
+    position: absolute;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    pointer-events: none;
+}
