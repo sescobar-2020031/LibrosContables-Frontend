@@ -6,6 +6,10 @@ import ModalLibroDiario from '~/components/ModalLibroDiario';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import SessionUserContext from '~/context/sessionUserContext';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import moment from 'moment';
+moment.locale('es')
 
 export interface IModalLibroDFormPage {
 	nameAccount: string;
@@ -14,13 +18,15 @@ export interface IModalLibroDFormPage {
 }
 const LibroDiario = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
-	const [dataSend, setDataSend] = useState({});
+	const [dataSend, setDataSend] = useState([]);
+	const [cargarData, setCargarData] = useState([]);
 	const { sessionUser } = useContext(SessionUserContext)
+
 	const loadData = async () => {
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
-		await axios.post(import.meta.env.VITE_GETDIARY, {idDiary: sessionUser.diaryBook})
+		await axios.post(import.meta.env.VITE_GETDIARY, { idDiary: sessionUser.diaryBook })
 			.then((res) => {
-				setDataSend(res.data.accounts);
+				setDataSend(res.data.diary.accountItems);
 			}).catch((err) => {
 				console.log(err);
 			});
@@ -28,19 +34,7 @@ const LibroDiario = () => {
 
 	useEffect(() => {
 		loadData();
-		console.log(dataSend);
-	}, [dataSend])
-
-	const columns = [
-		{
-			name: 'Id',
-			selector: (row: any) => row.id,
-		},
-		{
-			name: 'Nombre',
-			selector: (row: any) => row.title,
-		},
-	];
+	}, [cargarData])
 
 	// const data = accoutsUser.map((value: any, index) => {
 	// 	return {
@@ -61,6 +55,84 @@ const LibroDiario = () => {
 				>
 					<ModalLibroDiario setShowModal={setShowModal} />
 				</Modal>
+			}{
+				dataSend.map((data: any) => {
+					console.log(data);
+					return (
+						<>
+							<TextField
+								hiddenLabel
+								id="filled-hidden-label-small"
+								defaultValue="Small"
+								variant="filled"
+								value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
+								size="small"
+							/>
+							<TextField
+								hiddenLabel
+								id="filled-hidden-label-small"
+								defaultValue="Small"
+								variant="filled"
+								value={data.description}
+								size="small"
+							/>
+							<br />
+							{
+								data.accounts.map((data) => {
+									return (
+										<>
+											<TextField
+												hiddenLabel
+												id="filled-hidden-label-small"
+												defaultValue="Small"
+												variant="filled"
+												value={data.account.name}
+												size="small"
+											/>
+											<TextField
+												hiddenLabel
+												id="filled-hidden-label-small"
+												defaultValue="Small"
+												placeholder='Debe'
+												variant="filled"
+												value={data.position == 'Debit' ? data.amount : 0}
+												size="small"
+											/>
+											<TextField
+												hiddenLabel
+												id="filled-hidden-label-small"
+												defaultValue="Small"
+												variant="filled"
+												placeholder='Debe'
+												value={data.position == 'Credit' ? data.amount : 0}
+												size="small"
+											/>
+											<TextField
+												hiddenLabel
+												id="filled-hidden-label-small"
+												defaultValue="Small"
+												variant="filled"
+												placeholder='Debe'
+												value={data.position == 'Credit' ? data.amount : 0}
+												size="small"
+											/>
+											<TextField
+												hiddenLabel
+												id="filled-hidden-label-small"
+												defaultValue="Small"
+												variant="filled"
+												placeholder='Debe'
+												value={data.position == 'Credit' ? data.amount : 0}
+												size="small"
+											/>
+											<br></br>
+										</>
+									)
+								})
+							}
+						</>
+					)
+				})
 			}
 		</>
 	);
