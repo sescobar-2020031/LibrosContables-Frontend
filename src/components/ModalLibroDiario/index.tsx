@@ -22,11 +22,7 @@ interface InputTypes {
 	removeLine?: boolean;
 }
 
-interface IHeaderLibroDiario {
-	setShowModal: Dispatch<SetStateAction<boolean>>;
-}
-
-const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
+const ModalLibroDiario = () => {
 	const { register, handleSubmit, getValues, reset, control, formState } =
 		useForm<any>({
 			mode: 'onChange',
@@ -53,7 +49,7 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 	};
 
 	const onSubmit: SubmitHandler<any> = async data => {
-		const filteredData = Object.entries(data).reduce((obj: any, [key, value]) => {
+		const filteredData = Object.entries(data).reduce((obj, [key, value]) => {
 			if (value !== '') {
 				obj[key] = value;
 			}
