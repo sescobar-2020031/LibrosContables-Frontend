@@ -87,15 +87,6 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 			idDiary: sessionUser.diaryBook,
 		};
 
-		if (request.description.trim() === '' || request.idDiary.trim() === '') {
-			MySwal.fire({
-				title: 'Error',
-				text: 'La cuenta no puede estar vacia.',
-				icon: 'error',
-				confirmButtonText: 'OK',
-			});
-			return;
-		}
 
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
 		await axios
@@ -111,6 +102,7 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 				setCargarData(!cargarData);
 			})
 			.catch(err => {
+				console.log(err)
 				MySwal.fire({
 					title: 'Error',
 					text: err.response.data.message,
