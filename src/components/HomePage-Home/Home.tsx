@@ -2,8 +2,10 @@ import BannerBackground from '../../assets/images/home-banner-background.png'
 import BannerImage from '../../assets/images/home-banner-image.png'
 import { FiArrowRight } from "react-icons/fi";
 import './style.scss'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
+    const navigate = useNavigate();
     return (
         <div className="home-container">
             <div className="home-banner-container">
@@ -17,7 +19,7 @@ const Home = () => {
                     <p className="primary-text">
                         Nuestra plataforma te permite llevar un registro detallado de tus finanzas de manera sencilla y eficiente
                     </p>
-                    <button className="secondary-button">
+                    <button onClick={()=>{navigate("/register")}} className="secondary-button">
                         Registrate <FiArrowRight />
                     </button>
                 </div>

@@ -269,6 +269,7 @@ const Home = () => {
 				onClose={handleClose}
 				aria-labelledby='alert-dialog-title'
 				aria-describedby='alert-dialog-description'
+				className='rounded-dialog'
 			>
 				<DialogTitle
 					style={{ backgroundColor: '#5f3bd9' }}
@@ -296,7 +297,13 @@ const Home = () => {
 				</Box>
 				<DialogActions>
 					<Button onClick={handleClose}>Cerrar</Button>
-					<Button onClick={agregar} disabled={!isInputValid} autoFocus>
+					<Button
+						style={{ backgroundColor: '#4CAF50;' }}
+						onClick={agregar}
+						disabled={!isInputValid}
+						autoFocus
+						className='save-button'
+					>
 						Guardar
 					</Button>
 				</DialogActions>
