@@ -243,7 +243,7 @@ const Home = () => {
 			title: text,
 			inputAttributes: {
 				placeholder: 'Nombre de la cuenta'
-			  },
+			},
 			input: 'text',
 			confirmButtonText: 'Guardar',
 			showCancelButton: true,
@@ -253,7 +253,8 @@ const Home = () => {
 				if (!value) {
 					return 'El campo no puede estar vacio.';
 				}
-			},
+				return null;
+			}
 		}).then(result => {
 			if (result.isConfirmed) {
 				const { value } = result;
