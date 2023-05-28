@@ -76,3 +76,7 @@
 	border: white;
 	cursor: pointer;
 }
+
+.overlay{
+	z-index: 1000 !important;
+}

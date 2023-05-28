@@ -60,12 +60,6 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 	};
 
 	const onSubmit: SubmitHandler<any> = async data => {
-		const filteredData = Object.entries(data).reduce((obj, [key, value]) => {
-			if (value !== '') {
-				obj[key] = value;
-			}
-			return obj;
-		}, {});
 		type OutputObject = {
 			account: string;
 			position: string;
@@ -86,6 +80,36 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 			description: description,
 			idDiary: sessionUser.diaryBook,
 		};
+
+		const creditSum = request.accounts.reduce((sum, account) => {
+			if (account.position === 'Credit') {
+				return sum + account.amount;
+			}
+			return sum;
+		}, 0);
+
+		const debitSum = request.accounts.reduce((sum, account) => {
+			if (account.position === 'Debit') {
+				return sum + account.amount;
+			}
+			return sum;
+		}, 0);
+
+		const isEqual = creditSum === debitSum;
+
+		console.log(isEqual);
+
+		if (!isEqual) {
+			MySwal.fire({
+                icon: 'error',
+                title: 'Error',
+                text:
+                    'Tu partida no cuadra 😔',
+            });
+            invalid = true;
+            return;
+		}
+		return;
 
 
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
@@ -111,8 +135,6 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 				});
 			});
 	};
-
-	console.log(formState.isValid);
 
 	return (
 		<>
@@ -149,7 +171,7 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 								removeFields={removeFields}
 							/>
 						))}
-						<input disabled={!formState.isValid} className={!formState.isValid ? 'disabled': 'send'} type='submit' value='Guardar' />
+						<input disabled={!formState.isValid} className={!formState.isValid ? 'disabled' : 'send'} type='submit' value='Guardar' />
 					</form>
 				</div>
 			</div>
