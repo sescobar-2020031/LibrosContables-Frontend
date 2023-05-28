@@ -215,6 +215,40 @@ const Home = () => {
 		}));
 	};
 
+	const alerts = (text, type) => {
+		Swal.fire({
+			inputValue: selectedRowName,
+			title: text,
+			inputAttributes: {
+				placeholder: 'Nombre de la cuenta'
+			  },
+			input: 'text',
+			confirmButtonText: 'Guardar',
+			showCancelButton: true,
+			showLoaderOnConfirm: true,
+			cancelButtonColor: '#F26D6D',
+			inputValidator: value => {
+				if (!value) {
+					return 'El campo no puede estar vacio.';
+				}
+			},
+		}).then(result => {
+			if (result.isConfirmed) {
+				const { value } = result;
+				setDataSend(preUser => ({
+					...preUser,
+					name: value,
+				}));
+
+				if (type == 'add') {
+					agregar();
+				} else {
+					modificar();
+				}
+			}
+		});
+	};
+
 	const isInputValid = dataSend.name.trim() !== '';
 	const isInputValidEdit = selectedRowName !== '';
 
@@ -233,7 +267,9 @@ const Home = () => {
 						backgroundColor: 'green',
 						display: selectedRowId == undefined ? 'none' : 'flex',
 					}}
-					onClick={handleOpenEdit}
+					onClick={() => {
+						alerts('Ingrese el nuevo nombre de la cuenta.', 'edit');
+					}}
 				>
 					<EditIcon />
 				</button>
@@ -247,7 +283,12 @@ const Home = () => {
 				>
 					<DeleteOutlineIcon />
 				</button>
-				<button className='librodiario__button-add' onClick={handleOpen}>
+				<button
+					className='librodiario__button-add'
+					onClick={() => {
+						alerts('Ingrese el nombre de la cuenta.', 'add');
+					}}
+				>
 					+
 				</button>
 			</div>
@@ -264,85 +305,6 @@ const Home = () => {
 					console.log(selectedRows[0]?.identifier);
 				}}
 			/>
-			<Dialog
-				open={open}
-				onClose={handleClose}
-				aria-labelledby='alert-dialog-title'
-				aria-describedby='alert-dialog-description'
-				className='rounded-dialog'
-			>
-				<DialogTitle
-					style={{ backgroundColor: '#5f3bd9' }}
-					id='alert-dialog-title'
-				>
-					{'Agregar Cuenta'}
-				</DialogTitle>
-				<Box sx={{ pl: 10, pr: 10, pt: 3, pb: 3 }}>
-					<FormControl fullWidth>
-						<InputLabel htmlFor='outlined-adornment-amount'>Nombre</InputLabel>
-						<OutlinedInput
-							id='outlined-adornment-amount'
-							startAdornment={
-								<InputAdornment position='start'></InputAdornment>
-							}
-							label='Amount'
-							onChange={e =>
-								setDataSend(preUser => ({
-									...preUser,
-									name: e.target.value,
-								}))
-							}
-						/>
-					</FormControl>
-				</Box>
-				<DialogActions>
-					<Button onClick={handleClose}>Cerrar</Button>
-					<Button
-						style={{ backgroundColor: '#4CAF50;' }}
-						onClick={agregar}
-						disabled={!isInputValid}
-						autoFocus
-						className='save-button'
-					>
-						Guardar
-					</Button>
-				</DialogActions>
-			</Dialog>
-			<Dialog
-				open={openEdit}
-				onClose={handleCloseEdit}
-				aria-labelledby='alert-dialog-title'
-				aria-describedby='alert-dialog-description'
-			>
-				<DialogTitle
-					style={{ backgroundColor: 'green' }}
-					id='alert-dialog-title'
-				>
-					{'Modificar Cuenta'}
-				</DialogTitle>
-				<Box sx={{ pl: 10, pr: 10, pt: 3, pb: 3 }}>
-					<FormControl fullWidth>
-						<InputLabel htmlFor='outlined-adornment-amount'>Nombre</InputLabel>
-						<OutlinedInput
-							id='outlined-adornment-amount'
-							startAdornment={
-								<InputAdornment position='start'></InputAdornment>
-							}
-							label='Amount'
-							value={selectedRowName}
-							onChange={e => {
-								setSelectedRowName(e.target.value);
-							}}
-						/>
-					</FormControl>
-				</Box>
-				<DialogActions>
-					<Button onClick={handleCloseEdit}>Cerrar</Button>
-					<Button onClick={modificar} disabled={!isInputValidEdit} autoFocus>
-						Guardar
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</>
 	);
 };
