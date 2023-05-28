@@ -97,8 +97,6 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 
 		const isEqual = creditSum === debitSum;
 
-		console.log(isEqual);
-
 		if (!isEqual) {
 			MySwal.fire({
                 icon: 'error',
@@ -109,8 +107,6 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
             invalid = true;
             return;
 		}
-		return;
-
 
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
 		await axios

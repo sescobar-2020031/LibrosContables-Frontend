@@ -15,6 +15,7 @@ import SideNav from '../components/SideNav/SideNav';
 import Home from '../pages/Home/Home';
 import LibroDiario from '../pages/LibroDiario/LibroDiario';
 import BalanceSaldos from '~/pages/balanceSaldos/BalanceSaldos';
+import GeneralLedger from '~/pages/GeneralLedger/GeneralLedger';
 
 export const AppRouter = () => {
     const [loginRegister, setLoginRegister] = useState('');
@@ -94,7 +95,7 @@ export const AppRouter = () => {
                                     <Route path='/dashboard' element={<SideNav />}>
                                         <Route path='home' element={<Home />} />
                                         <Route path='libroDiario' element={<LibroDiario />} />
-                                        <Route path='libroMayor' element={<LibroDiario />} />
+                                        <Route path='libroMayor' element={<GeneralLedger />} />
                                         <Route path='balanceSaldos' element={<BalanceSaldos />} />
                                         <Route path='estadoFinanciero' element={<LibroDiario />} />
                                         <Route path='balanceGeneral' element={<LibroDiario />} />
