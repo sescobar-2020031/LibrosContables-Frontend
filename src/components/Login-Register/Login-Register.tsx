@@ -9,10 +9,13 @@ import DialogContext from '../../context/DialogContex';
 import ModalResponse from '../ModalResponse/ModalResponse';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
+import { useNavigate } from 'react-router-dom';
 const MySwal = withReactContent(Swal);
 
 const LoginRegister = () => {
+	const navigate = useNavigate();
+
+
 	const { loginRegister, setLoginRegister } = useContext(LoginRegisterContext);
 	const { setSessionUser } = useContext(SessionUserContext);
 	const { setOpen } = useContext(DialogContext);
@@ -28,8 +31,8 @@ const LoginRegister = () => {
 			.post(import.meta.env.VITE_REGISTER, registerUser)
 			.then(res => {
 				MySwal.fire({
-					title: 'Success',
-					text: 'Alert successful',
+					title: 'Exito',
+					text: 'Registro exitoso.',
 					icon: 'success',
 					confirmButtonText: 'OK',
 				});
@@ -38,6 +41,7 @@ const LoginRegister = () => {
 					email: '',
 					password: '',
 				});
+				navigate("/login");
 			})
 			.catch(err => {
 				MySwal.fire({
@@ -195,7 +199,7 @@ const LoginRegister = () => {
 							<h3>Nuevo Aqui ?</h3>
 							<p>
 								Registrate y empieza a llevar una mejor contabilidad de tu
-								negocio!!
+								negocio!
 							</p>
 							<button
 								className='login-btn transparent'

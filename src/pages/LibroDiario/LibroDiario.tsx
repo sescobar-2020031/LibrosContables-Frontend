@@ -34,16 +34,18 @@ const LibroDiario = () => {
 			});
 	};
 
+	const textFieldStyles = {
+		margin: '0.2rem',
+		backgroundColor: 'white',
+		borderRadius: '0.5rem',
+		border: '1px solid #ccc',
+		padding: '0.5rem',
+	};
+
 	useEffect(() => {
 		loadData();
 	}, [cargarData]);
 
-	// const data = accoutsUser.map((value: any, index) => {
-	// 	return {
-	// 		id: index,
-	// 		title: value.name
-	// 	}
-	// });
 	return (
 		<>
 			<div className='librodiario__dashboard'>
@@ -58,80 +60,108 @@ const LibroDiario = () => {
 					<ModalLibroDiario setShowModal={setShowModal} />
 				</Modal>
 			}
+			<Stack direction='row' spacing={2}>
+				<TextField
+					label='Fecha'
+					variant='outlined'
+					disabled
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Descripción'
+					variant='outlined'
+					disabled
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Cuenta'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Debe'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Haber'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+			</Stack>
 			{dataSend.map((data: any, index: number) => {
-				console.log(data);
 				return (
 					<>
-						<TextField
-							key={index}
-							hiddenLabel
-							id='filled-hidden-label-small'
-							defaultValue='Small'
-							variant='filled'
-							value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
-							size='small'
-						/>
-						<TextField
-							hiddenLabel
-							id='filled-hidden-label-small'
-							defaultValue='Small'
-							variant='filled'
-							value={data.description}
-							size='small'
-						/>
-						<br />
-						{data.accounts.map((data, index: number) => {
-							return (
-								<>
-									<TextField
-										key={index}
-										hiddenLabel
-										id='filled-hidden-label-small'
-										defaultValue='Small'
-										variant='filled'
-										value={data.account.name}
-										size='small'
-									/>
-									<TextField
-										hiddenLabel
-										id='filled-hidden-label-small'
-										defaultValue='Small'
-										placeholder='Debe'
-										variant='filled'
-										value={data.position == 'Debit' ? data.amount : 0}
-										size='small'
-									/>
-									<TextField
-										hiddenLabel
-										id='filled-hidden-label-small'
-										defaultValue='Small'
-										variant='filled'
-										placeholder='Debe'
-										value={data.position == 'Credit' ? data.amount : 0}
-										size='small'
-									/>
-									<TextField
-										hiddenLabel
-										id='filled-hidden-label-small'
-										defaultValue='Small'
-										variant='filled'
-										placeholder='Debe'
-										value={data.position == 'Credit' ? data.amount : 0}
-										size='small'
-									/>
-									<TextField
-										hiddenLabel
-										id='filled-hidden-label-small'
-										defaultValue='Small'
-										variant='filled'
-										placeholder='Debe'
-										value={data.position == 'Credit' ? data.amount : 0}
-										size='small'
-									/>
-									<br></br>
-								</>
-							);
-						})}
+						<Stack direction='row' spacing={2}>
+							<TextField
+								key={index}
+								hiddenLabel
+								disabled
+								id='filled-hidden-label-small'
+								defaultValue='Small'
+								variant='filled'
+								value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
+								size='small'
+								style={textFieldStyles}
+							/>
+							<TextField
+								hiddenLabel
+								disabled
+								id='filled-hidden-label-small'
+								defaultValue='Small'
+								variant='filled'
+								value={data.description}
+								size='small'
+								style={textFieldStyles}
+							/>
+							{data.accounts.map((data, index: number) => {
+								return (
+									<>
+										<TextField
+											key={index}
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											variant='filled'
+											value={data.account.name}
+											size='small'
+											style={textFieldStyles}
+										/>
+										<TextField
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											placeholder='Debe'
+											variant='filled'
+											value={data.position == 'Debit' ? data.amount : 0}
+											size='small'
+											style={textFieldStyles}
+										/>
+										<TextField
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											variant='filled'
+											placeholder='Debe'
+											value={data.position == 'Credit' ? data.amount : 0}
+											size='small'
+											style={textFieldStyles}
+										/>
+									</>
+								);
+							})}
+						</Stack>
 					</>
 				);
 			})}
