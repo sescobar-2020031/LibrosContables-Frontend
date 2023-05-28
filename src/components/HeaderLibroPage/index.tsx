@@ -10,7 +10,7 @@ const HeaderLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 	return (
 		<>
 			<div className='librodiario__header'>
-				<span className='librodiario__title'>Agregar un libro diario</span>
+				<span className='librodiario__title'>Libro diario</span>
 				<button
 					className='librodiario__button-add'
 					onClick={() => setShowModal(true)}

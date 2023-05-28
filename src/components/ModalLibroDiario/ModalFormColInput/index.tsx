@@ -79,18 +79,19 @@ const ModalColForm = ({
 					/> */}
 					<select
 						style={{
-							width: '100%',
-							padding: '1rem'
+							width: '100%'
 						}}
 						defaultValue='select'
-						{...register(`nameAccount${registerName}`, {})}
+						{...register(`nameAccount${registerName}`, {
+							required: true
+						})}
 					>
 						<option selected disabled value='0'>
-							Selecciona una cuenta
+							Elige una cuenta
 						</option>
 						{
-							accoutsUser.map((item: any) => (
-								<option value={item._id}>
+							accoutsUser.map((item: any, index: any) => (
+								<option key={index} value={item._id}>
 									{item.name}
 								</option>
 							))
@@ -109,7 +110,7 @@ const ModalColForm = ({
 						className='librodiario__modal-form-input'
 						{...register(`debe${registerName}`, {
 							pattern: {
-								value: /^[0-9]+$/,
+								value: /^\d*\.?\d*$/,
 								message: 'Solo se permiten números.',
 							},
 							onChange: e => handleDebeChange(e),
@@ -127,7 +128,7 @@ const ModalColForm = ({
 						className='librodiario__modal-form-input'
 						{...register(`haber${registerName}`, {
 							pattern: {
-								value: /^[0-9]+$/,
+								value: /^\d*\.?\d*$/,
 								message: 'Solo se permiten números',
 							},
 							onChange: e => handleHaberChange(e),

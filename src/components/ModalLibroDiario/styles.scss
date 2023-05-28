@@ -5,35 +5,44 @@
 		gap: 1rem;
 		align-items: center;
 	}
+
 	&__modal-form {
 		padding: 0;
 	}
+
 	&__modal {
 		margin-top: 3rem;
 		padding: 1rem;
 	}
+
 	&__modal-add-column {
 		font-size: 0.9rem;
 		text-decoration: none;
 	}
+
 	&__modal-title {
 		font-size: 1.2rem;
 		font-weight: bold;
 	}
+
 	&__modal-label {
 		width: 25.33%;
 		height: 64px;
 	}
+
 	&__modal-form-input {
 		width: 100%;
 	}
+
 	&__modal-form-input:disabled {
 		background: #dddddd;
 		cursor: not-allowed;
 	}
+
 	&__container-form {
 		margin-top: 1.5rem;
 	}
+
 	&__options {
 		display: flex;
 		flex-direction: column;
@@ -52,6 +61,18 @@
 	text-decoration: underline #000;
 }
 
-.css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input{
+.css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input {
 	height: 0.1em !important;
+}
+
+.disabled {
+	cursor: not-allowed;
+	background-color: #a5797933;
+}
+
+.send {
+	background-color: #5f3bd9;
+	color: white;
+	border: white;
+	cursor: pointer;
 }

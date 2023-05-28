@@ -17,6 +17,7 @@ import withReactContent from 'sweetalert2-react-content';
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import './styles.scss'
 
 const MySwal = withReactContent(Swal);
 
@@ -27,22 +28,43 @@ const Home = () => {
 	const customStyles = {
 		table: {
 			style: {
-				border: '1px solid #e0e0e0',
+				border: '1px solid #5f3bd9',
+				borderRadius: '10px 10px 0 0'
 			},
 		},
 		headCells: {
 			style: {
 				fontWeight: 'bold',
-				backgroundColor: '#f5f5f5',
-				borderBottom: '1px solid #e0e0e0',
+				backgroundColor: '#5f3bd9',
+				color: '#fff',
 			},
 		},
 		cells: {
 			style: {
 				fontSize: '15px',
+				borderTop: '1px solid #5f3bd9'
 			},
 		},
 	};
+
+	const isPrime = num => {
+		return num % 2 === 0;
+	}
+
+	const conditionalRowStyles = [
+		{
+			when: row => isPrime(row.id),
+			style: {
+				backgroundColor: '#E5E5E1',
+			},
+		},
+		{
+			when: row => !isPrime(row.id),
+			style: {
+				backgroundColor: 'white',
+			},
+		},
+	];
 
 	const [accoutsUser, setAccoutsUser] = useState([]);
 	const [dataSend, setDataSend] = useState({
@@ -202,7 +224,7 @@ const Home = () => {
 
 	const data = accoutsUser.map((value: any, index) => {
 		return {
-			id: index,
+			id: index + 1,
 			title: value.name,
 			identifier: value._id,
 		};
@@ -225,43 +247,46 @@ const Home = () => {
 					className='librodiario__title'
 					style={{ fontFamily: 'sans-serif' }}
 				>
-					Agregar cuentas
+					Cuentas
 				</span>
-				<button
-					className='librodiario__button-add'
-					style={{
-						backgroundColor: 'green',
-						display: selectedRowId == undefined ? 'none' : 'flex',
-					}}
-					onClick={handleOpenEdit}
-				>
-					<EditIcon />
-				</button>
-				<button
-					className='librodiario__button-add'
-					style={{
-						backgroundColor: 'red',
-						display: selectedRowId == undefined ? 'none' : 'flex',
-					}}
-					onClick={handleOpenDelete}
-				>
-					<DeleteOutlineIcon />
-				</button>
-				<button className='librodiario__button-add' onClick={handleOpen}>
-					+
-				</button>
+				<div className='librodiario_buttons'>
+					<button
+						className='librodiario__button-add'
+						style={{
+							backgroundColor: '#D5DE43',
+							display: selectedRowId == undefined ? 'none' : 'flex',
+						}}
+						onClick={handleOpenEdit}
+					>
+						<EditIcon />
+					</button>
+					<button
+						className='librodiario__button-add'
+						style={{
+							backgroundColor: '#EB6D4A',
+							display: selectedRowId == undefined ? 'none' : 'flex',
+						}}
+						onClick={handleOpenDelete}
+					>
+						<DeleteOutlineIcon />
+					</button>
+					<button className='librodiario__button-add' onClick={handleOpen}>
+						+
+					</button>
+				</div>
 			</div>
 			<DataTable
 				selectableRows
 				selectableRowsSingle
 				customStyles={customStyles}
+				conditionalRowStyles={conditionalRowStyles}
 				pagination
+				paginationPerPage={6}
 				columns={columns}
 				data={data}
 				onSelectedRowsChange={({ selectedRows }) => {
 					setSelectedRowName(selectedRows[0]?.title);
 					setSelectedRowId(selectedRows[0]?.identifier);
-					console.log(selectedRows[0]?.identifier);
 				}}
 			/>
 			<Dialog

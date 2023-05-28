@@ -29,9 +29,11 @@ let invalid = false;
 
 interface IHeaderLibroDiario {
 	setShowModal: Dispatch<SetStateAction<boolean>>;
+	cargarData: boolean;
+	setCargarData: Dispatch<SetStateAction<boolean>>;
 }
 
-const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
+const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLibroDiario) => {
 	const { register, handleSubmit, getValues, reset, control, formState } =
 		useForm<any>({
 			mode: 'onChange',
@@ -106,6 +108,7 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 					confirmButtonText: 'OK',
 				});
 				setShowModal(false);
+				setCargarData(!cargarData);
 			})
 			.catch(err => {
 				MySwal.fire({
@@ -117,21 +120,24 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 			});
 	};
 
+	console.log(formState.isValid);
+
 	return (
 		<>
 			<div className='librodiario__modal'>
-				<span className='librodiario__modal-title'>Libro diario</span>
-				<FormControl fullWidth className='formControl'>
-					<InputLabel htmlFor='outlined-adornment-amount'>
-						Descripcion
-					</InputLabel>
-					<OutlinedInput
-						id='outlined-adornment-amount'
-						startAdornment={<InputAdornment position='start'></InputAdornment>}
-						label='Amount'
-						onChange={e => setDescription(e.target.value)}
+				<span style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }} className='librodiario__modal-title'>Añade una partida</span>
+				<label htmlFor='' className='librodiario__modal-label'>
+					<input
+						type='text'
+						placeholder='Descripcion'
+						className='librodiario__modal-form-input'
+						onChange={(e) => setDescription(e.target.value)}
+						required
 					/>
-				</FormControl>
+					{/* {formState.errors.debe && (
+						<p className='input-error'>{formState.errors.debe.message}</p>
+					)} */}
+				</label>
 				<div className='librodiario__container-form'>
 					<form
 						action=''
@@ -139,7 +145,6 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 						onSubmit={handleSubmit(onSubmit)}
 					>
 						{campos.map((object: InputTypes, index: number) => (
-
 							<ModalColForm
 								key={index}
 								register={register}
@@ -152,7 +157,7 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 								removeFields={removeFields}
 							/>
 						))}
-						<input type='submit' value='Guardar' />
+						<input disabled={!formState.isValid} className={!formState.isValid ? 'disabled': 'send'} type='submit' value='Guardar' />
 					</form>
 				</div>
 			</div>

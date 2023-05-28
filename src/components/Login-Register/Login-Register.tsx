@@ -84,9 +84,7 @@ const LoginRegister = () => {
 					diaryBook: res.data.diaryBookExist._id,
 					userLoggued: true,
 				};
-				setTimeout(() => {
-					setSessionUser(data);
-				}, 5000);
+				setSessionUser(data);
 			})
 			.catch(err => {
 				MySwal.fire({
