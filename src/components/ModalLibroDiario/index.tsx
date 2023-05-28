@@ -81,19 +81,25 @@ const ModalLibroDiario = ({ setShowModal, cargarData, setCargarData }: IHeaderLi
 			idDiary: sessionUser.diaryBook,
 		};
 
+		console.log(request.accounts);
+
 		const creditSum = request.accounts.reduce((sum, account) => {
 			if (account.position === 'Credit') {
-				return sum + account.amount;
+				return sum + +account.amount;
 			}
 			return sum;
 		}, 0);
 
+		console.log(creditSum);
+
 		const debitSum = request.accounts.reduce((sum, account) => {
 			if (account.position === 'Debit') {
-				return sum + account.amount;
+				return sum + +account.amount;
 			}
 			return sum;
 		}, 0);
+
+		console.log(debitSum);
 
 		const isEqual = creditSum === debitSum;
 
