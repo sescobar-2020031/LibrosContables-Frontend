@@ -227,33 +227,11 @@ const Home = () => {
 				>
 					Agregar cuentas
 				</span>
-				<button
-					className='librodiario__button-add'
-					style={{
-						backgroundColor: 'green',
-						display: selectedRowId == undefined ? 'none' : 'flex',
-					}}
-					onClick={handleOpenEdit}
-				>
-					<EditIcon />
-				</button>
-				<button
-					className='librodiario__button-add'
-					style={{
-						backgroundColor: 'red',
-						display: selectedRowId == undefined ? 'none' : 'flex',
-					}}
-					onClick={handleOpenDelete}
-				>
-					<DeleteOutlineIcon />
-				</button>
 				<button className='librodiario__button-add' onClick={handleOpen}>
 					+
 				</button>
 			</div>
 			<DataTable
-				selectableRows
-				selectableRowsSingle
 				customStyles={customStyles}
 				pagination
 				columns={columns}
@@ -322,56 +300,6 @@ const Home = () => {
 						autoFocus
 						className='save-button'
 					>
-						Guardar
-					</Button>
-				</DialogActions>
-			</Dialog>
-
-			<Dialog
-				open={openEdit}
-				onClose={handleCloseEdit}
-				aria-labelledby='alert-dialog-title'
-				aria-describedby='alert-dialog-description'
-			>
-				<DialogTitle
-				
-				style={{
-					textAlign: 'center',
-					fontSize: '1.5rem',
-					fontFamily: 'sans-serif',
-				}}
-					id='alert-dialog-title'
-				>
-					{'Modificar Cuenta'}
-				</DialogTitle>
-				<Box sx={{ pl: 10, pr: 10, pt: 3, pb: 3 }}>
-					<FormControl fullWidth>
-						<InputLabel htmlFor='outlined-adornment-amount'>Nombre</InputLabel>
-						<OutlinedInput
-						style={{ fontSize: '1.2rem' }}
-							id='outlined-adornment-amount'
-							startAdornment={
-								<InputAdornment position='start'></InputAdornment>
-							}
-							label='Amount'
-							value={selectedRowName}
-							onChange={e => {
-								setSelectedRowName(e.target.value);
-							}}
-						/>
-					</FormControl>
-				</Box>
-				<DialogActions>
-					<Button style={{
-							backgroundColor: '#ff7f7f',
-							fontWeight: 'bold',
-							color: 'whitesmoke',
-						}} onClick={handleCloseEdit}>Cerrar</Button>
-					<Button style={{
-							backgroundColor: '#b19cd9',
-							fontWeight: 'bold',
-							color: 'whitesmoke',
-						}} onClick={modificar} disabled={!isInputValidEdit} autoFocus>
 						Guardar
 					</Button>
 				</DialogActions>
