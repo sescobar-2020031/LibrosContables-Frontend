@@ -116,3 +116,11 @@
     align-items: center;
     pointer-events: none;
 }
+
+.tooltop-logout{
+    pointer-events: all;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

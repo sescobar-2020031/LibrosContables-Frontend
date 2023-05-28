@@ -21,9 +21,15 @@ import BalanceIcon from '@mui/icons-material/Balance';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import { Outlet, Link, useLocation } from 'react-router-dom';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import Typography from '@mui/material/Typography';
 import './style.scss'
 
 const drawerWidth = 240;
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -101,6 +107,18 @@ export default function SideNav() {
     const location = useLocation();
     const rutaActual = location.pathname.split('/')[2];
 
+    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+        null
+    );
+
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -129,7 +147,38 @@ export default function SideNav() {
                 </Toolbar>
                 <h1 className={`logo-loggued ${open ? 'transparentNavbar' : ''}`}><i className={`fa-solid fa-book-open-reader iconHeader`}></i>Bookify</h1>
                 <div className='boxUser'>
-                    <h1 style={{color: "#000", fontSize: "20px"}}>Hola mundo</h1>
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip className='tooltop-logout' title="Open settings">
+                            <Box>
+                                <h3>Hola mundo</h3>
+                                <IconButton sx={{ p: 0 }}>
+                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                </IconButton>
+                            </Box>
+                        </Tooltip>
+                        <Menu
+                            sx={{ mt: '45px' }}
+                            id="menu-appbar"
+                            anchorEl={anchorElUser}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElUser)}
+                            onClose={handleCloseUserMenu}
+                        >
+                            {settings.map((setting) => (
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">{setting}</Typography>
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </Box>
                 </div>
             </AppBar>
             <Drawer variant="permanent" open={open}>
