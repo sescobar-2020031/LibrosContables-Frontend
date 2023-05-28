@@ -28,6 +28,7 @@ import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import './style.scss'
 
+
 const drawerWidth = 240;
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 

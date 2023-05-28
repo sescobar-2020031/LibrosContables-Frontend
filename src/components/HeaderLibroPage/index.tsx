@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import './styles.scss';
 
+
 interface IHeaderLibroDiario {
 	setShowModal: Dispatch<SetStateAction<boolean>>;
 }

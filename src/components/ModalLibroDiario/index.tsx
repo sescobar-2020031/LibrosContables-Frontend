@@ -12,7 +12,10 @@ import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
+const MySwal = withReactContent(Swal);
 import SessionUserContext from '../../context/sessionUserContext';
 
 interface InputTypes {
@@ -21,6 +24,8 @@ interface InputTypes {
 	haber: string;
 	removeLine?: boolean;
 }
+
+let invalid = false;
 
 interface IHeaderLibroDiario {
 	setShowModal: Dispatch<SetStateAction<boolean>>;
@@ -38,7 +43,7 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 		{ nameAccount: '', debe: '', haber: '', removeLine: false },
 	]);
 
-	const [description, setDescription] = useState('')
+	const [description, setDescription] = useState('');
 
 	const addFields = () => {
 		let newfield = { nameAccount: '', debe: '', haber: '' };
@@ -59,18 +64,15 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 			}
 			return obj;
 		}, {});
-		console.log(
-			'🚀 ~ file: index.tsx:39 ~ ModalLibroDiario ~ filteredData:',
-			filteredData
-		);
 		type OutputObject = {
 			account: string;
 			position: string;
 			amount: number;
 		};
-		console.log(data);
 		var output: OutputObject[] = [];
-		let accounts = Object.keys(data).filter(key => key.startsWith('nameAccount')).length;
+		let accounts = Object.keys(data).filter(key =>
+			key.startsWith('nameAccount')
+		).length;
 		for (let i = 0; i < accounts; i++) {
 			let account = data[`nameAccount${i}`];
 			let position = data[`debe${i}`] ? 'Debit' : 'Credit';
@@ -80,32 +82,57 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 		const request = {
 			accounts: output,
 			description: description,
-			idDiary: sessionUser.diaryBook
+			idDiary: sessionUser.diaryBook,
+		};
+
+		if (request.description.trim() === '' || request.idDiary.trim() === '') {
+			MySwal.fire({
+				title: 'Error',
+				text: 'La cuenta no puede estar vacia.',
+				icon: 'error',
+				confirmButtonText: 'OK',
+			});
+			return;
 		}
 
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
-		await axios.post(import.meta.env.VITE_ADDITEMACCOUNT, request)
-			.then((res) => {
-				console.log(res);
-			}).catch((err) => {
-				console.log(err);
+		await axios
+			.post(import.meta.env.VITE_ADDITEMACCOUNT, request)
+			.then(res => {
+				MySwal.fire({
+					icon: 'success',
+					title: 'Exito',
+					text: res.data.message,
+					confirmButtonText: 'OK',
+				});
+				setShowModal(false);
+			})
+			.catch(err => {
+				MySwal.fire({
+					title: 'Error',
+					text: 'La cuenta no puede estar vacia.',
+					/* 					text:
+						err.response.data.message != null
+							? err.response.data.message
+							: err.response.data, */
+					icon: 'error',
+					confirmButtonText: 'OK',
+				});
 			});
-
-		setShowModal(false);
 	};
 
 	return (
 		<>
 			<div className='librodiario__modal'>
-				<span className='librodiario__modal-title'>
-					Libro diario
-				</span>
-				<FormControl fullWidth className='formControl' >
-					<InputLabel htmlFor="outlined-adornment-amount">Descripcion</InputLabel>
+				<span className='librodiario__modal-title'>Libro diario</span>
+				<FormControl fullWidth className='formControl'>
+					<InputLabel htmlFor='outlined-adornment-amount'>
+						Descripcion
+					</InputLabel>
 					<OutlinedInput
-						id="outlined-adornment-amount"
-						startAdornment={<InputAdornment position="start"></InputAdornment>}
-						label="Amount"
+						id='outlined-adornment-amount'
+						startAdornment={<InputAdornment position='start'></InputAdornment>}
+						label='Amount'
 						onChange={e => setDescription(e.target.value)}
 					/>
 				</FormControl>
@@ -116,7 +143,9 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 						onSubmit={handleSubmit(onSubmit)}
 					>
 						{campos.map((object: InputTypes, index: number) => (
+
 							<ModalColForm
+								key={index}
 								register={register}
 								getValues={getValues}
 								formState={formState}

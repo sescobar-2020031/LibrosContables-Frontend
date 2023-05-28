@@ -9,7 +9,7 @@ import SessionUserContext from '~/context/sessionUserContext';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import moment from 'moment';
-moment.locale('es')
+moment.locale('es');
 
 export interface IModalLibroDFormPage {
 	nameAccount: string;
@@ -20,28 +20,32 @@ const LibroDiario = () => {
 	const [showModal, setShowModal] = useState<boolean>(false);
 	const [dataSend, setDataSend] = useState([]);
 	const [cargarData, setCargarData] = useState([]);
-	const { sessionUser } = useContext(SessionUserContext)
+	const { sessionUser } = useContext(SessionUserContext);
 
 	const loadData = async () => {
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
-		await axios.post(import.meta.env.VITE_GETDIARY, { idDiary: sessionUser.diaryBook })
-			.then((res) => {
+		await axios
+			.post(import.meta.env.VITE_GETDIARY, { idDiary: sessionUser.diaryBook })
+			.then(res => {
 				setDataSend(res.data.diary.accountItems);
-			}).catch((err) => {
+			})
+			.catch(err => {
 				console.log(err);
 			});
-	}
+	};
+
+	const textFieldStyles = {
+		margin: '0.2rem',
+		backgroundColor: 'white',
+		borderRadius: '0.5rem',
+		border: '1px solid #ccc',
+		padding: '0.5rem',
+	};
 
 	useEffect(() => {
 		loadData();
-	}, [cargarData])
+	}, [cargarData]);
 
-	// const data = accoutsUser.map((value: any, index) => {
-	// 	return {
-	// 		id: index,
-	// 		title: value.name
-	// 	}
-	// });
 	return (
 		<>
 			<div className='librodiario__dashboard'>
@@ -55,85 +59,112 @@ const LibroDiario = () => {
 				>
 					<ModalLibroDiario setShowModal={setShowModal} />
 				</Modal>
-			}{
-				dataSend.map((data: any) => {
-					console.log(data);
-					return (
-						<>
-							<TextField
-								hiddenLabel
-								id="filled-hidden-label-small"
-								defaultValue="Small"
-								variant="filled"
-								value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
-								size="small"
-							/>
-							<TextField
-								hiddenLabel
-								id="filled-hidden-label-small"
-								defaultValue="Small"
-								variant="filled"
-								value={data.description}
-								size="small"
-							/>
-							<br />
-							{
-								data.accounts.map((data) => {
-									return (
-										<>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												value={data.account.name}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												placeholder='Debe'
-												variant="filled"
-												value={data.position == 'Debit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<TextField
-												hiddenLabel
-												id="filled-hidden-label-small"
-												defaultValue="Small"
-												variant="filled"
-												placeholder='Debe'
-												value={data.position == 'Credit' ? data.amount : 0}
-												size="small"
-											/>
-											<br></br>
-										</>
-									)
-								})
-							}
-						</>
-					)
-				})
 			}
+			<Stack direction='row' spacing={2}>
+				<TextField
+					label='Fecha'
+					variant='outlined'
+					disabled
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Descripción'
+					variant='outlined'
+					disabled
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Cuenta'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Debe'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+				<TextField
+					label='Haber'
+					disabled
+					variant='outlined'
+					size='small'
+					style={textFieldStyles}
+				/>
+			</Stack>
+			{dataSend.map((data: any, index: number) => {
+				return (
+					<>
+						<Stack direction='row' spacing={2}>
+							<TextField
+								key={index}
+								hiddenLabel
+								disabled
+								id='filled-hidden-label-small'
+								defaultValue='Small'
+								variant='filled'
+								value={moment(data.date).format('MMMM Do YYYY, h:mm:ss a')}
+								size='small'
+								style={textFieldStyles}
+							/>
+							<TextField
+								hiddenLabel
+								disabled
+								id='filled-hidden-label-small'
+								defaultValue='Small'
+								variant='filled'
+								value={data.description}
+								size='small'
+								style={textFieldStyles}
+							/>
+							{data.accounts.map((data, index: number) => {
+								return (
+									<>
+										<TextField
+											key={index}
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											variant='filled'
+											value={data.account.name}
+											size='small'
+											style={textFieldStyles}
+										/>
+										<TextField
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											placeholder='Debe'
+											variant='filled'
+											value={data.position == 'Debit' ? data.amount : 0}
+											size='small'
+											style={textFieldStyles}
+										/>
+										<TextField
+											hiddenLabel
+											disabled
+											id='filled-hidden-label-small'
+											defaultValue='Small'
+											variant='filled'
+											placeholder='Debe'
+											value={data.position == 'Credit' ? data.amount : 0}
+											size='small'
+											style={textFieldStyles}
+										/>
+									</>
+								);
+							})}
+						</Stack>
+					</>
+				);
+			})}
 		</>
 	);
 };
