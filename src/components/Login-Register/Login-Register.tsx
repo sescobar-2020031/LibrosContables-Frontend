@@ -32,7 +32,7 @@ const LoginRegister = () => {
 			.then(res => {
 				MySwal.fire({
 					title: 'Exito',
-					text: 'Registro exitoso.',
+					text: res.data.message,
 					icon: 'success',
 					confirmButtonText: 'OK',
 				});
@@ -73,7 +73,7 @@ const LoginRegister = () => {
 			.then(res => {
 				MySwal.fire({
 					title: 'Exito.',
-					text: 'Logueo exitoso.',
+					text: res.data.message,
 					icon: 'success',
 					confirmButtonText: 'OK',
 				});

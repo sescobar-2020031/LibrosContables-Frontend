@@ -110,11 +110,7 @@ const ModalLibroDiario = ({ setShowModal }: IHeaderLibroDiario) => {
 			.catch(err => {
 				MySwal.fire({
 					title: 'Error',
-					text: 'La cuenta no puede estar vacia.',
-					/* 					text:
-						err.response.data.message != null
-							? err.response.data.message
-							: err.response.data, */
+					text: err.response.data.message,
 					icon: 'error',
 					confirmButtonText: 'OK',
 				});
