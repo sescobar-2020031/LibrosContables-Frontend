@@ -71,8 +71,9 @@ const BalanceSaldos = () => {
 	};
 
 	useEffect(() => {
+		console.log('Hola me ejecute');
 		loadData();
-	}, [dataSend]);
+	});
 
 	const columns = [
 		{

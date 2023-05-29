@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useContext, Fragment, useState } from 'react';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -27,6 +28,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import './style.scss'
+import SessionUserContext from '../../context/sessionUserContext';
 
 
 const drawerWidth = 240;
@@ -112,6 +114,8 @@ export default function SideNav() {
         null
     );
 
+    const { sessionUser } = useContext(SessionUserContext);
+
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -151,7 +155,7 @@ export default function SideNav() {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip className='tooltop-logout' title="Open settings">
                             <Box>
-                                <h3>Hola mundo</h3>
+                                <h3>{sessionUser.fullName}</h3>
                                 <IconButton sx={{ p: 0 }}>
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                                 </IconButton>
