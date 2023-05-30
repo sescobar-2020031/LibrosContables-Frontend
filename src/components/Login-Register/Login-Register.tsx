@@ -6,7 +6,6 @@ import Loggued from '../../assets/images/register.svg';
 import axios from 'axios';
 import './style.scss';
 import DialogContext from '../../context/DialogContex';
-import ModalResponse from '../ModalResponse/ModalResponse';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useNavigate } from 'react-router-dom';
@@ -101,7 +100,6 @@ const LoginRegister = () => {
 
 	return (
 		<Fragment>
-			<ModalResponse />
 			<div
 				className={
 					loginRegister == 'Register'

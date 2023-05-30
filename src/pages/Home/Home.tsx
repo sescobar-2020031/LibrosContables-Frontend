@@ -131,9 +131,8 @@ const Home = () => {
 	const eliminar = async () => {
 		axios.defaults.headers.common['Authorization'] = sessionUser.token;
 		await axios
-			.post(import.meta.env.VITE_DELETEACCOUNT, { id: selectedRowId })
+			.post(import.meta.env.VITE_DELETEACCOUNT, { idAccount: selectedRowId, idDiary: sessionUser.diaryBook })
 			.then(data => {
-				loadData();
 				MySwal.fire({
 					title: 'Exito',
 					text: data.data.message,
@@ -162,9 +161,9 @@ const Home = () => {
 			.post(import.meta.env.VITE_EDITACCOUNT, {
 				id: selectedRowId,
 				name: selectedRowName,
+				idDiary: sessionUser.diaryBook
 			})
 			.then(data => {
-				loadData();
 				MySwal.fire({
 					title: 'Exito',
 					text: data.data.message,
@@ -175,6 +174,7 @@ const Home = () => {
 				handleCloseEdit();
 			})
 			.catch(err => {
+				console.log(err);
 				MySwal.fire({
 					title: 'Error',
 					text:
@@ -253,7 +253,7 @@ const Home = () => {
 					<button
 						className='librodiario__button-add'
 						style={{
-							backgroundColor: '#D5DE43',
+							backgroundColor: 'rgb(202 215 0)',
 							display: selectedRowId == undefined ? 'none' : 'flex',
 						}}
 						onClick={handleOpenEdit}
@@ -331,7 +331,7 @@ const Home = () => {
 					<Button
 						onClick={handleClose}
 						style={{
-							backgroundColor: '#ff7f7f',
+							backgroundColor: 'rgb(229 42 42)',
 							fontWeight: 'bold',
 							color: 'whitesmoke',
 						}}
@@ -340,7 +340,7 @@ const Home = () => {
 					</Button>
 					<Button
 						style={{
-							backgroundColor: '#b19cd9',
+							backgroundColor: isInputValid ? '#5f3bd9' : 'rgb(157 136 229)',
 							fontWeight: 'bold',
 							color: 'whitesmoke',
 						}}
@@ -390,7 +390,7 @@ const Home = () => {
 				<DialogActions>
 					<Button
 						style={{
-							backgroundColor: '#ff7f7f',
+							backgroundColor: 'rgb(229 42 42)',
 							fontWeight: 'bold',
 							color: 'whitesmoke',
 						}}
@@ -400,12 +400,11 @@ const Home = () => {
 					</Button>
 					<Button
 						style={{
-							backgroundColor: '#b19cd9',
+							backgroundColor: '#5f3bd9',
 							fontWeight: 'bold',
 							color: 'whitesmoke',
 						}}
 						onClick={modificar}
-						disabled={!isInputValidEdit}
 						autoFocus
 					>
 						Guardar
