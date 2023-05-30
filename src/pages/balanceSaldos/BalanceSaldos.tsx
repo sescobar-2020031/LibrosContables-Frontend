@@ -7,6 +7,8 @@ import withReactContent from 'sweetalert2-react-content';
 
 const MySwal = withReactContent(Swal);
 
+import ButtonUp from "../../components/ButtonUp/ButtonUp";
+
 const BalanceSaldos = () => {
 	const convertNumbers = number => {
 		const convertedNumber = number.toLocaleString('es-GT', {
@@ -146,6 +148,7 @@ const BalanceSaldos = () => {
 				columns={columns}
 				data={dataWithEmptyRow}
 			/>
+			<ButtonUp />
 		</>
 	);
 };

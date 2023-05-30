@@ -26,11 +26,6 @@ const Home = () => {
 	const [selectedRowName, setSelectedRowName] = useState('');
 
 	const customStyles = {
-		rows: {
-			style: {
-				backgroundColor: 'inherit', // Mantener el fondo transparente
-			},
-		},
 		table: {
 			style: {
 				border: '1px solid #5f3bd9',
@@ -283,6 +278,7 @@ const Home = () => {
 			<DataTable
 				selectableRows
 				selectableRowsSingle
+				noDataComponent="No tienes Cuentas 😢"
 				customStyles={customStyles}
 				conditionalRowStyles={conditionalRowStyles}
 				pagination

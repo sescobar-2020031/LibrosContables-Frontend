@@ -15,6 +15,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AlignVerticalTopIcon from '@mui/icons-material/AlignVerticalTop';
@@ -39,6 +40,7 @@ import {
 } from '@mui/icons-material';
 import { Divider } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import UserImage from '../../assets/images/user.png'
 
 const MySwal = withReactContent(Swal);
 
@@ -125,7 +127,7 @@ export default function SideNav() {
 		null
 	);
 
-	const { sessionUser } = useContext(SessionUserContext);
+	const { sessionUser, setSessionUser } = useContext(SessionUserContext);
 
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElUser(event.currentTarget);
@@ -176,24 +178,30 @@ export default function SideNav() {
 				</h1>
 				<div className='boxUser'>
 					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip className='tooltop-logout' title='Open settings'>
-							<Box>
-								<h3>{sessionUser.fullName}</h3>
+						<Tooltip className='tooltop-logout' title='Configuraciones'>
+							<Box onClick={handleClick}>
 								<IconButton
-									onClick={handleClick}
 									size='small'
 									aria-controls={abrir ? 'account-menu' : undefined}
 									aria-haspopup='true'
 									aria-expanded={abrir ? 'true' : undefined}
-									sx={{ p: 0 }}
+									sx={{ p: 0, backgroundColor: '#5f3bd9' }}
 								>
 									<Avatar
 										alt={sessionUser.fullName}
 										sx={{ width: 32, height: 32 }}
+										src={UserImage}
 									>
-										<AccountCircle />{' '}
 									</Avatar>
 								</IconButton>
+								<h3>{sessionUser.fullName}</h3>
+								<ListItemIcon>
+									<ArrowDropDownIcon
+										sx={{
+											color: '#5f3bd9',
+											fontSize: '1.5rem'
+										}} />
+								</ListItemIcon>
 							</Box>
 						</Tooltip>
 						<Menu
@@ -231,62 +239,35 @@ export default function SideNav() {
 							transformOrigin={{ horizontal: 'right', vertical: 'top' }}
 							anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
 						>
-							<MenuItem onClick={handleClose}>
-								<Avatar /> Profile
-							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<Avatar /> Account
-							</MenuItem>
-							<Divider />
-							<MenuItem onClick={handleClose}>
-								<ListItemIcon>
-									<PersonAdd fontSize='small' />
-								</ListItemIcon>
-								Dashboard
-							</MenuItem>
 							<MenuItem
 								onClick={() => {
 									MySwal.fire({
-										title: 'Estas a punto de cerrar sesion.',
+										title: 'Estas seguro de serrar sesión?',
 										icon: 'warning',
 										showCancelButton: true,
-										confirmButtonText: 'Cerrar sesion.',
+										confirmButtonText: 'Cerrar sesion',
 										cancelButtonText: 'Cancelar',
 									}).then(result => {
 										if (result.isConfirmed) {
-											navigate('/home');
+											const data = {
+												fullName: '',
+												email: '',
+												token: '',
+												diaryBook: '',
+												userLoggued: false,
+											};
+											sessionStorage.clear();
+											setSessionUser(data);
 										}
 									});
 								}}
 							>
 								<ListItemIcon>
-									<Logout fontSize='small' />
+									<Logout fontSize='small' sx={{color: '#ff2200c7'}}/>
 								</ListItemIcon>
 								Logout
 							</MenuItem>
 						</Menu>
-						{/* 	<Menu
-							sx={{ mt: '45px' }}
-							id='menu-appbar'
-							anchorEl={anchorElUser}
-							anchorOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							keepMounted
-							transformOrigin={{
-								vertical: 'top',
-								horizontal: 'right',
-							}}
-							open={Boolean(anchorElUser)}
-							onClose={handleCloseUserMenu}
-						>
-							{settings.map(setting => (
-								<MenuItem key={setting} onClick={handleCloseUserMenu}>
-									<Typography textAlign='center'>{setting}</Typography>
-								</MenuItem>
-							))}
-						</Menu> */}
 					</Box>
 				</div>
 			</AppBar>
