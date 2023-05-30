@@ -14,10 +14,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-
+import $ from 'jquery';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
-import './styles.scss'
+import './styles.scss';
 
 const MySwal = withReactContent(Swal);
 
@@ -26,10 +26,15 @@ const Home = () => {
 	const [selectedRowName, setSelectedRowName] = useState('');
 
 	const customStyles = {
+		rows: {
+			style: {
+				backgroundColor: 'inherit', // Mantener el fondo transparente
+			},
+		},
 		table: {
 			style: {
 				border: '1px solid #5f3bd9',
-				borderRadius: '10px 10px 0 0'
+				borderRadius: '10px 10px 0 0',
 			},
 		},
 		headCells: {
@@ -42,14 +47,14 @@ const Home = () => {
 		cells: {
 			style: {
 				fontSize: '15px',
-				borderTop: '1px solid #5f3bd9'
+				borderTop: '1px solid #5f3bd9',
 			},
 		},
 	};
 
 	const isPrime = num => {
 		return num % 2 === 0;
-	}
+	};
 
 	const conditionalRowStyles = [
 		{
@@ -237,44 +242,9 @@ const Home = () => {
 		}));
 	};
 
-	const alerts = (text, type) => {
-		Swal.fire({
-			inputValue: selectedRowName,
-			title: text,
-			inputAttributes: {
-				placeholder: 'Nombre de la cuenta'
-			},
-			input: 'text',
-			confirmButtonText: 'Guardar',
-			showCancelButton: true,
-			showLoaderOnConfirm: true,
-			cancelButtonColor: '#F26D6D',
-			inputValidator: value => {
-				if (!value) {
-					return 'El campo no puede estar vacio.';
-				}
-				return null;
-			}
-		}).then(result => {
-			if (result.isConfirmed) {
-				const { value } = result;
-				setDataSend(preUser => ({
-					...preUser,
-					name: value,
-				}));
-
-				if (type == 'add') {
-					agregar();
-				} else {
-					modificar();
-				}
-			}
-		});
-	};
-
 	const isInputValid = dataSend.name.trim() !== '';
 	const isInputValidEdit = selectedRowName !== '';
-
+	$('.sc-fqkvVR.kzxGrj').css({ backgroundColor: '#fff' });
 	return (
 		<>
 			<div className='librodiario__header'>
@@ -311,6 +281,8 @@ const Home = () => {
 				</div>
 			</div>
 			<DataTable
+				selectableRows
+				selectableRowsSingle
 				customStyles={customStyles}
 				conditionalRowStyles={conditionalRowStyles}
 				pagination
@@ -380,6 +352,65 @@ const Home = () => {
 						disabled={!isInputValid}
 						autoFocus
 						className='save-button'
+					>
+						Guardar
+					</Button>
+				</DialogActions>
+			</Dialog>
+			<Dialog
+				open={openEdit}
+				onClose={handleCloseEdit}
+				aria-labelledby='alert-dialog-title'
+				aria-describedby='alert-dialog-description'
+				className='rounded-dialog'
+				fullWidth
+			>
+				<DialogTitle
+					style={{
+						textAlign: 'center',
+						fontSize: '1.5rem',
+						fontFamily: 'sans-serif',
+					}}
+					id='alert-dialog-title'
+				>
+					{'Modificar Cuenta'}
+				</DialogTitle>
+				<Box sx={{ pl: 10, pr: 10, pt: 3, pb: 3 }}>
+					<FormControl fullWidth>
+						<InputLabel htmlFor='outlined-adornment-amount'>Nombre</InputLabel>
+						<OutlinedInput
+							id='outlined-adornment-amount'
+							startAdornment={
+								<InputAdornment position='start'></InputAdornment>
+							}
+							label='Amount'
+							value={selectedRowName}
+							onChange={e => {
+								setSelectedRowName(e.target.value);
+							}}
+						/>
+					</FormControl>
+				</Box>
+				<DialogActions>
+					<Button
+						style={{
+							backgroundColor: '#ff7f7f',
+							fontWeight: 'bold',
+							color: 'whitesmoke',
+						}}
+						onClick={handleCloseEdit}
+					>
+						Cerrar
+					</Button>
+					<Button
+						style={{
+							backgroundColor: '#b19cd9',
+							fontWeight: 'bold',
+							color: 'whitesmoke',
+						}}
+						onClick={modificar}
+						disabled={!isInputValidEdit}
+						autoFocus
 					>
 						Guardar
 					</Button>

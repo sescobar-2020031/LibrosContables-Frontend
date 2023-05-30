@@ -26,314 +26,483 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import Typography from '@mui/material/Typography';
-import './style.scss'
+import './style.scss';
 import SessionUserContext from '../../context/sessionUserContext';
+import {
+	AccountCircle,
+	Logout,
+	PersonAdd,
+	Settings,
+} from '@mui/icons-material';
+import { Divider } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
+const MySwal = withReactContent(Swal);
 
 const drawerWidth = 240;
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const openedMixin = (theme: Theme): CSSObject => ({
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
+	width: drawerWidth,
+	transition: theme.transitions.create('width', {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.enteringScreen,
+	}),
+	overflowX: 'hidden',
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
-    transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up('sm')]: {
-        width: `calc(${theme.spacing(8)} + 1px)`,
-    },
+	transition: theme.transitions.create('width', {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
+	}),
+	overflowX: 'hidden',
+	width: `calc(${theme.spacing(7)} + 1px)`,
+	[theme.breakpoints.up('sm')]: {
+		width: `calc(${theme.spacing(8)} + 1px)`,
+	},
 });
 
 const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'flex-end',
+	padding: theme.spacing(0, 1),
+	// necessary for content to be below app bar
+	...theme.mixins.toolbar,
 }));
 
 interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
+	open?: boolean;
 }
 
 const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
+	shouldForwardProp: prop => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    })
+	zIndex: theme.zIndex.drawer + 1,
+	transition: theme.transitions.create(['width', 'margin'], {
+		easing: theme.transitions.easing.sharp,
+		duration: theme.transitions.duration.leavingScreen,
+	}),
+	...(open && {
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create(['width', 'margin'], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.enteringScreen,
+		}),
+	}),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-        boxSizing: 'border-box',
-        ...(open && {
-            ...openedMixin(theme),
-            '& .MuiDrawer-paper': openedMixin(theme),
-        }),
-        ...(!open && {
-            ...closedMixin(theme),
-            '& .MuiDrawer-paper': closedMixin(theme),
-        }),
-    }),
-);
+const Drawer = styled(MuiDrawer, {
+	shouldForwardProp: prop => prop !== 'open',
+})(({ theme, open }) => ({
+	width: drawerWidth,
+	flexShrink: 0,
+	whiteSpace: 'nowrap',
+	boxSizing: 'border-box',
+	...(open && {
+		...openedMixin(theme),
+		'& .MuiDrawer-paper': openedMixin(theme),
+	}),
+	...(!open && {
+		...closedMixin(theme),
+		'& .MuiDrawer-paper': closedMixin(theme),
+	}),
+}));
 
 export default function SideNav() {
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
+	const theme = useTheme();
+	const [open, setOpen] = React.useState(false);
 
-    const location = useLocation();
-    const rutaActual = location.pathname.split('/')[2];
+	const location = useLocation();
+	const rutaActual = location.pathname.split('/')[2];
 
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-        null
-    );
+	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+		null
+	);
 
-    const { sessionUser } = useContext(SessionUserContext);
+	const { sessionUser } = useContext(SessionUserContext);
 
-    const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElUser(event.currentTarget);
-    };
+	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorElUser(event.currentTarget);
+	};
 
-    const handleCloseUserMenu = () => {
-        setAnchorElUser(null);
-    };
+	const handleCloseUserMenu = () => {
+		setAnchorElUser(null);
+	};
 
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
+	const handleDrawerOpen = () => {
+		setOpen(true);
+	};
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
 
-    return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar className={`navbarLoggued ${open ? 'transparentNavbar' : ''}`}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{
-                            marginRight: 5,
-                            ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                </Toolbar>
-                <h1 className={`logo-loggued ${open ? 'transparentNavbar' : ''}`}><i className={`fa-solid fa-book-open-reader iconHeader`}></i>Bookify</h1>
-                <div className='boxUser'>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip className='tooltop-logout' title="Open settings">
-                            <Box>
-                                <h3>{sessionUser.fullName}</h3>
-                                <IconButton sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                                </IconButton>
-                            </Box>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
-                    </Box>
-                </div>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <DrawerHeader className='header-loggued'>
-                    <h1 className='logo-loggued-open'><i className="fa-solid fa-book-open-reader iconHeader-open"></i>Bookify</h1>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
-                </DrawerHeader>
-                <Box className="links">
-                    <List className={rutaActual == "home" ? "active" : ""}>
-                        <ListItem className={rutaActual == "home" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="home">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <AccountBalanceWalletIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Cuentas" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <List className={rutaActual == "libroDiario" ? "active" : ""}>
-                        <ListItem className={rutaActual == "libroDiario" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="libroDiario">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <MenuBookIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Libro Diario" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <List className={rutaActual == "libroMayor" ? "active" : ""}>
-                        <ListItem className={rutaActual == "libroMayor" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="libroMayor">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <AlignVerticalTopIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Libro Mayor" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <List className={rutaActual == "balanceSaldos" ? "active" : ""}>
-                        <ListItem className={rutaActual == "balanceSaldos" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="balanceSaldos">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <BalanceIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Balance de saldos" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <List className={rutaActual == "estadoFinanciero" ? "active" : ""}>
-                        <ListItem className={rutaActual == "estadoFinanciero" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="estadoFinanciero">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <ViewListIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Estado Financiero" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <List className={rutaActual == "balanceGeneral" ? "active" : ""}>
-                        <ListItem className={rutaActual == "balanceGeneral" ? "link active" : "link"} disablePadding sx={{ display: 'block' }} component={Link} to="balanceGeneral">
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
-                                    sx={{
-                                        minWidth: 0,
-                                        mr: open ? 3 : 'auto',
-                                        justifyContent: 'center',
-                                    }}
-                                >
-                                    <ClearAllIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Balance General" sx={{ opacity: open ? 1 : 0 }} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                </Box>
-            </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <DrawerHeader />
-                <main>
-                    <Outlet />
-                </main>
-            </Box>
-        </Box>
-    );
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const abrir = Boolean(anchorEl);
+	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const navigate = useNavigate();
+	return (
+		<Box sx={{ display: 'flex' }}>
+			<CssBaseline />
+			<AppBar position='fixed' open={open}>
+				<Toolbar className={`navbarLoggued ${open ? 'transparentNavbar' : ''}`}>
+					<IconButton
+						color='inherit'
+						aria-label='open drawer'
+						onClick={handleDrawerOpen}
+						edge='start'
+						sx={{
+							marginRight: 5,
+							...(open && { display: 'none' }),
+						}}
+					>
+						<MenuIcon />
+					</IconButton>
+				</Toolbar>
+				<h1 className={`logo-loggued ${open ? 'transparentNavbar' : ''}`}>
+					<i className={`fa-solid fa-book-open-reader iconHeader`}></i>Bookify
+				</h1>
+				<div className='boxUser'>
+					<Box sx={{ flexGrow: 0 }}>
+						<Tooltip className='tooltop-logout' title='Open settings'>
+							<Box>
+								<h3>{sessionUser.fullName}</h3>
+								<IconButton
+									onClick={handleClick}
+									size='small'
+									aria-controls={abrir ? 'account-menu' : undefined}
+									aria-haspopup='true'
+									aria-expanded={abrir ? 'true' : undefined}
+									sx={{ p: 0 }}
+								>
+									<Avatar
+										alt={sessionUser.fullName}
+										sx={{ width: 32, height: 32 }}
+									>
+										<AccountCircle />{' '}
+									</Avatar>
+								</IconButton>
+							</Box>
+						</Tooltip>
+						<Menu
+							anchorEl={anchorEl}
+							id='account-menu'
+							open={abrir}
+							onClose={handleClose}
+							onClick={handleClose}
+							PaperProps={{
+								elevation: 0,
+								sx: {
+									overflow: 'visible',
+									filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+									mt: 1.5,
+									'& .MuiAvatar-root': {
+										width: 32,
+										height: 32,
+										ml: -0.5,
+										mr: 1,
+									},
+									'&:before': {
+										content: '""',
+										display: 'block',
+										position: 'absolute',
+										top: 0,
+										right: 14,
+										width: 10,
+										height: 10,
+										bgcolor: 'background.paper',
+										transform: 'translateY(-50%) rotate(45deg)',
+										zIndex: 0,
+									},
+								},
+							}}
+							transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+							anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+						>
+							<MenuItem onClick={handleClose}>
+								<Avatar /> Profile
+							</MenuItem>
+							<MenuItem onClick={handleClose}>
+								<Avatar /> Account
+							</MenuItem>
+							<Divider />
+							<MenuItem onClick={handleClose}>
+								<ListItemIcon>
+									<PersonAdd fontSize='small' />
+								</ListItemIcon>
+								Dashboard
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									MySwal.fire({
+										title: 'Estas a punto de cerrar sesion.',
+										icon: 'warning',
+										showCancelButton: true,
+										confirmButtonText: 'Cerrar sesion.',
+										cancelButtonText: 'Cancelar',
+									}).then(result => {
+										if (result.isConfirmed) {
+											navigate('/home');
+										}
+									});
+								}}
+							>
+								<ListItemIcon>
+									<Logout fontSize='small' />
+								</ListItemIcon>
+								Logout
+							</MenuItem>
+						</Menu>
+						{/* 	<Menu
+							sx={{ mt: '45px' }}
+							id='menu-appbar'
+							anchorEl={anchorElUser}
+							anchorOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: 'top',
+								horizontal: 'right',
+							}}
+							open={Boolean(anchorElUser)}
+							onClose={handleCloseUserMenu}
+						>
+							{settings.map(setting => (
+								<MenuItem key={setting} onClick={handleCloseUserMenu}>
+									<Typography textAlign='center'>{setting}</Typography>
+								</MenuItem>
+							))}
+						</Menu> */}
+					</Box>
+				</div>
+			</AppBar>
+			<Drawer variant='permanent' open={open}>
+				<DrawerHeader className='header-loggued'>
+					<h1 className='logo-loggued-open'>
+						<i className='fa-solid fa-book-open-reader iconHeader-open'></i>
+						Bookify
+					</h1>
+					<IconButton onClick={handleDrawerClose}>
+						{theme.direction === 'rtl' ? (
+							<ChevronRightIcon />
+						) : (
+							<ChevronLeftIcon />
+						)}
+					</IconButton>
+				</DrawerHeader>
+				<Box className='links'>
+					<List className={rutaActual == 'home' ? 'active' : ''}>
+						<ListItem
+							className={rutaActual == 'home' ? 'link active' : 'link'}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='home'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<AccountBalanceWalletIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Cuentas'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<List className={rutaActual == 'libroDiario' ? 'active' : ''}>
+						<ListItem
+							className={rutaActual == 'libroDiario' ? 'link active' : 'link'}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='libroDiario'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<MenuBookIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Libro Diario'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<List className={rutaActual == 'libroMayor' ? 'active' : ''}>
+						<ListItem
+							className={rutaActual == 'libroMayor' ? 'link active' : 'link'}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='libroMayor'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<AlignVerticalTopIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Libro Mayor'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<List className={rutaActual == 'balanceSaldos' ? 'active' : ''}>
+						<ListItem
+							className={rutaActual == 'balanceSaldos' ? 'link active' : 'link'}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='balanceSaldos'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<BalanceIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Balance de saldos'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<List className={rutaActual == 'estadoFinanciero' ? 'active' : ''}>
+						<ListItem
+							className={
+								rutaActual == 'estadoFinanciero' ? 'link active' : 'link'
+							}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='estadoFinanciero'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<ViewListIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Estado Financiero'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+					<List className={rutaActual == 'balanceGeneral' ? 'active' : ''}>
+						<ListItem
+							className={
+								rutaActual == 'balanceGeneral' ? 'link active' : 'link'
+							}
+							disablePadding
+							sx={{ display: 'block' }}
+							component={Link}
+							to='balanceGeneral'
+						>
+							<ListItemButton
+								sx={{
+									minHeight: 48,
+									justifyContent: open ? 'initial' : 'center',
+									px: 2.5,
+								}}
+							>
+								<ListItemIcon
+									sx={{
+										minWidth: 0,
+										mr: open ? 3 : 'auto',
+										justifyContent: 'center',
+									}}
+								>
+									<ClearAllIcon />
+								</ListItemIcon>
+								<ListItemText
+									primary='Balance General'
+									sx={{ opacity: open ? 1 : 0 }}
+								/>
+							</ListItemButton>
+						</ListItem>
+					</List>
+				</Box>
+			</Drawer>
+			<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+				<DrawerHeader />
+				<main>
+					<Outlet />
+				</main>
+			</Box>
+		</Box>
+	);
 }
