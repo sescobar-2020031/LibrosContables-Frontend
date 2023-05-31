@@ -7,6 +7,7 @@ import withReactContent from 'sweetalert2-react-content';
 import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import './style.scss'
 
 const MySwal = withReactContent(Swal);
 
@@ -61,249 +62,97 @@ const GeneralLedger = () => {
     return (
         accoutsUser.map((data) => {
             return (
-                <div style={{ marginTop: '2rem' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <h2>{data.name}</h2>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: '50%',
-                                borderRight: '2px solid black',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul
-                                style={{
-                                    listStyle: 'none',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignContent: 'center',                                
-                                }}>
-                                {
+                <div className="flex-container_padre">
+                    <div className="card">
+                        <div className="container">
+                            <div className='center text_title'>
+                                {data.name}
+                            </div>
+                            <div className="line"></div>
+                            <div className="flex-container">
+                                <div className="flex-item item-left">{
                                     data.debits.map((accountData) => {
                                         return (
-                                            <li>#{accountData.numberDiaryBook} {convertNumbers(accountData.amount)}</li>
+                                            <div className='diplay_flex'>
+                                                <p>#{accountData.numberDiaryBook}</p>
+                                                <p className='center'>{convertNumbers(accountData.amount)}</p>
+                                            </div>
                                         )
                                     })
-                                }
-                            </ul>
-                        </div>
-                        <div
-                            style={{
-                                width: '50%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul style={{
-                                listStyle: 'none',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                            }}>
-                                {
+                                }</div>
+                                <div className="flex-item">{
                                     data.credits.map((accountData) => {
                                         return (
-                                            <li>#{accountData.numberDiaryBook} {convertNumbers(accountData.amount)}</li>
+                                            <div className='diplay_flex'>
+                                                <p className='center'>{convertNumbers(accountData.amount)}</p>
+                                                <p>#{accountData.numberDiaryBook}</p>
+                                            </div>
+
                                         )
                                     })
-                                }
-                            </ul>
-                        </div>
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '0',
-                                left: '50%',
-                                width: '2px',
-                                height: '100%',
-                                background: 'black',
-                            }}
-                        ></div>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: '50%',
-                                borderRight: '2px solid black',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul style={{
-                                listStyle: 'none',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'center',
-                            }}>
-                                <li>
+                                }</div>
+                            </div>
+                            <div className="line"></div>
+                            <div className="flex-container">
+                                <div className="flex-item item-left">
+                                    <p className='center'>
+                                        {
+                                            data.fullDebits ?
+                                                convertNumbers(data.fullDebits)
+                                                : null
+                                        }
+                                    </p>
                                     {
-                                        data.fullDebits ?
-                                            convertNumbers(data.fullDebits)
-                                            : null
+                                        data.balance.position == 'Debit' ?
+                                            <p className='center'>
+                                                {
+                                                    convertNumbers(data.balance.account)
+                                                }
+                                            </p>
+                                            : ' '
                                     }
-                                </li>
-                                {
-                                    data.balance.position == 'Debit' ?
-                                        <li>
-                                            {
-                                                convertNumbers(data.balance.account)
-                                            }
-                                        </li>
-                                        : 0.00
-                                }
-                            </ul>
-                        </div>
-                        <div
-                            style={{
-                                width: '50%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul style={{
-                                listStyle: 'none'
-                            }}>
-                                <li>
+                                </div>
+                                <div className="flex-item">
+                                    <p className='center'>
+                                        {
+                                            data.fullCredits ?
+                                                convertNumbers(data.fullCredits)
+                                                : null
+                                        }
+                                    </p>
                                     {
-                                        data.fullCredits ?
+                                        data.balance.position == 'Credit' ?
+                                            <p className='center'>
+                                                {
+                                                    convertNumbers(data.balance.account)
+                                                }
+                                            </p>
+                                            : ' '
+                                    }
+                                </div>
+                            </div>
+                            <div className="line"></div>
+                            <div className="line" style={{ marginTop: '2px' }}></div>
+                            <div className="flex-container">
+                                <div className="flex-item item-left center">
+                                    {
+                                        data.fullCredits > data.fullDebits ?
                                             convertNumbers(data.fullCredits)
-                                            : 0.00
+                                            : convertNumbers(data.fullDebits)
                                     }
-                                </li>
-                                {
-                                    data.balance.position == 'Credit' ?
-                                        <li>
-                                            {
-                                                convertNumbers(data.balance.account)
-                                            }
-                                        </li>
-                                        : null
-                                }
-                            </ul>
+                                </div>
+                                <div className="flex-item center">
+                                    {
+                                        data.fullCredits > data.fullDebits ?
+                                            convertNumbers(data.fullCredits)
+                                            : convertNumbers(data.fullDebits)
+                                    }
+                                </div>
+                            </div>
+                            <div className="line"></div>
+                            <div className="line" style={{ marginTop: '2px' }}></div>
                         </div>
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '0',
-                                left: '50%',
-                                width: '2px',
-                                height: '100%',
-                                background: 'black',
-                            }}
-                        ></div>
                     </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            marginBottom: '1px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    ></div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: '50%',
-                                borderRight: '2px solid black',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul style={{
-                                listStyle: 'none'
-                            }}>
-                                <li>{
-                                    data.fullCredits > data.fullDebits ?
-                                        convertNumbers(data.fullCredits)
-                                        : convertNumbers(data.fullDebits)
-                                }</li>
-                            </ul>
-                        </div>
-                        <div
-                            style={{
-                                width: '50%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                padding: '8px',
-                            }}
-                        >
-                            <ul style={{
-                                listStyle: 'none'
-                            }}>
-                                <li>{
-                                    data.fullCredits > data.fullDebits ?
-                                        convertNumbers(data.fullCredits)
-                                        : convertNumbers(data.fullDebits)
-                                }</li>
-                            </ul>
-                        </div>
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: '0',
-                                left: '50%',
-                                width: '2px',
-                                height: '100%',
-                                background: 'black',
-                            }}
-                        ></div>
-                    </div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    ></div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            marginTop: '1px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            position: 'relative',
-                            borderTop: '3px solid black',
-                        }}
-                    ></div>
                 </div>
             )
         })
